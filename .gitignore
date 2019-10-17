@@ -1,0 +1,9 @@
+
+.DS_Store
+.idea/$CACHE_FILE$
+.idea/$PRODUCT_WORKSPACE_FILE$
+.idea/compiler.xml
+.idea/cs312---Proj-1.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml

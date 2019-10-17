@@ -19,23 +19,14 @@ importThenBuild filepath = do
   - where the listOf Ticks for a certain channel is in the sequential
   - order in which it appears in the midi file. 
   -}
-getTicks :: Midi -> [(Channel, [Ticks])]
-getTracks midi = map (\(tick, msg)->(channel))
+--getTicks :: Midi -> [(Channel, [Ticks])]
+getTicks midi = map (\(t, msg)->((channel msg),[t])) (filterNoteOnOff midi)
 
 
 
 {- filterNoteOnOff returns a listOf tracks wherein every track has
   - a message of type NoteOn or NoteOff
   -}
-filterNoteOnOff midi = filter (\(tick, msg) -> isNoteOnOff (msg)) (tracks midi)
-
-
-
-{- isNoteOnOff returns true if the given message is a NoteOn/Off 
-  - message and false otherwise.
-  -}
-isNoteOnOff :: Message -> Bool
-isNoteOnOff msg 
-  | msg == NoteOn = true
-  | msg == NoteOff = true
-  | otherwise = false
+filterNoteOnOff midi = filter (\(y,x) -> ((isNoteOn x) ||
+                                         (isNoteOff x)))
+                                         (tracks midi)

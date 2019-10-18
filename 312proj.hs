@@ -11,13 +11,13 @@ matrix list = [(key1, key2, 0) | key1 <- (uniques list), key2 <- (uniques list)]
 
 makenewlist list n newlist
     |n == 0 = newlist
-    |newlist == [] = makenewlist list (n - 1) (pickfirst list):[]
-    |otherwise = makenewlist list (n -1) (newlist : picknext (last newlist) (options (last newlist) (proptoprob (populate list (matrix (list))))))
+    |newlist == [] = makenewlist list (n - 1) [(pickfirst list)]
+    |otherwise = makenewlist list (n -1) (picknext (head newlist) (options (last newlist) (proptoprob (populate list (matrix (list)))))) : newlist
 
 picknext item (head:opts)
     |opts == [] = second head
     |(third head) >= random = second head
-    | otherwise = picknext item ( (addtothird (third head) (head opts)) : (tail opts) )
+    | otherwise = picknext item ( (proptoprob (opts)) : (tail opts) )
 
 addtothird n (a,b,c) = (a, b, (c + n))
 third (a,b,c) = c
@@ -35,7 +35,7 @@ proptoprob ((a,b,c):t)
     | t == [] = [(a,b,c)]
     |otherwise = (a,b, (c/ (sumcolumn a ((a,b,c):t)))):(proptoprob t)
 
-options = filter (match1 item)
+options item = filter (match1 item)
 
 match1 item (key1, key2, prop) = item == key1
 

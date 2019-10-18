@@ -1,0 +1,17 @@
+
+.DS_Store
+.idea/$CACHE_FILE$
+.idea/$PRODUCT_WORKSPACE_FILE$
+.idea/compiler.xml
+.idea/cs312---Proj-1.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+
+*.pantry-write-lock
+
+.stack-work/install/x86_64-linux-tinfo6/d178bff71141dcb18f064613bbd35f1dde830e547c20cd097e978214c11fd7a5/8.6.5/pkgdb/package.cache
+
+.stack-work/install/x86_64-linux-tinfo6/d178bff71141dcb18f064613bbd35f1dde830e547c20cd097e978214c11fd7a5/8.6.5/pkgdb/package.cache.lock
+
+.stack-work/stack.sqlite3

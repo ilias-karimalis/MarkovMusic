@@ -9,10 +9,15 @@
 matrix [] = []
 matrix list = [(key1, key2, 0) | key1 <- (uniques list), key2 <- (uniques list)]
 
-picknext item (head:options)
-    |options == [] = third head
+makenewlist list n 
+    |n == 0 = []
+    |otherwise = ((pickfirst list) : picknext (n - 1) (pickfirst list) (options (proptoprob (populate (matrix (list))))))
+
+picknext n item (head:opts)
+    |n == 0 = second head
+    |opts == [] = second head
     |(third head) >= random = second head
-    | otherwise = picknext item ( (addtothird (third head) (head options)) : (tail options) )
+    | otherwise = picknext (n - 1) item ( (addtothird (third head) (head opts)) : (tail options) )
 
 addtothird n (a,b,c) = (a, b, (c + n))
 third (a,b,c) = c

@@ -30,8 +30,8 @@ importThenBuild filepath = do
 
 {- getListOfTick returns a listOf Ticks which occur in the midi filename
    -}
-getListOfTick :: Midi -> [Ticks]
-getListOfTick midi = map (\(y,x) -> y) (filterNoteOnOff midi)
+getListOfTicks :: Midi -> [Ticks]
+getListOfTicks midi = map (\(y,x) -> y) (filterNoteOnOff midi)
 
 
 

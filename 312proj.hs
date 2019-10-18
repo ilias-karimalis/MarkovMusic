@@ -1,8 +1,5 @@
 --main prediction function encapsulates markov chain functions--
 
---synthesize:: [ (channel, [key])] -> [(channel, [velocity])] -> [(channel, [tick])] -> [(channel, [(velocity, key, tick)])]
-
-synthesize [] = []
 
 
 
@@ -12,11 +9,26 @@ synthesize [] = []
 matrix [] = []
 matrix list = [(key1, key2, 0) | key1 <- (uniques list), key2 <- (uniques list)]
 
+picknext item [(key1, key2, prop)] =
+
+where 
+    options = filter (match1 item) [(key1, key2, prop)]
+
+match1 (key1, key2, prop) = item == key1
+
+pickfirst list = list!!(round ((length list) * RANDOM))
+
+
 
 --uses matrix to create a matrix of zeroes and then replaces the zeroes with probabilites
---populate:: Num int => [int] -> [(int, int, int)] -> [(int, int, int)]
-populate [] [(key1, key2, prop)] = [(key1, key2, prop)]
-populate (h:t) [] = []
+--populate:: Eq int Num prop=> [int] -> [(int, int, prop)] -> [(int, int, prop)]
+--goes through a list of keys, velocities, or ticks
+--filters unique items in that list
+--builds triplets such that each unique pair has a triplet, originally created with a zero
+--goes through 
+
+populate _ [] = []
+populate [] _ = []
 populate (h:t) [(key1, key2, prop)]
     | (length (h:t)) == 0 = [(key1, key2, prop)]
     | (length (h:t)) == 1 = (map (add1key1 h) [(key1, key2, prop)])
@@ -41,5 +53,8 @@ add1key1key2 h n (key1, key2, prop)
 
 
 --returns only the unique items in a list
---uniques:: [a] -> [a]
-uniques _ = [1, 2, 3]
+uniques:: Eq a => [a] -> [a]
+uniques [] = []
+uniques (h:t)
+    | elem h t = uniques t
+    | otherwise = h:(uniques t)

@@ -9,4 +9,4 @@ requires:
 - midi <- a haskell package
 
 to play files you can import into online music sequencer:
-[http://onlinesequencer.net/import]
+http://onlinesequencer.net/import

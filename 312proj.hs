@@ -24,6 +24,7 @@ third (a,b,c) = c
 second (a,b,c) = b
 
 sumcolumn d ((a,b,c):t)
+    | t == [] = c
     | d == a = c + sumcolumn d t
     | otherwise = sumcolumn d t
 

@@ -9,15 +9,15 @@
 matrix [] = []
 matrix list = [(key1, key2, 0) | key1 <- (uniques list), key2 <- (uniques list)]
 
-makenewlist list n 
-    |n == 0 = []
-    |otherwise = ((pickfirst list) : picknext (n - 1) (pickfirst list) (options (proptoprob (populate (matrix (list))))))
+makenewlist list n newlist
+    |n == 0 = newlist
+    |newlist == [] = makenewlist list (n - 1) (pickfirst list):[]
+    |otherwise = makenewlist list (n -1) (newlist : picknext (last newlist) (options (last newlist) (proptoprob (populate list (matrix (list))))))
 
-picknext n item (head:opts)
-    |n == 0 = second head
+picknext item (head:opts)
     |opts == [] = second head
     |(third head) >= random = second head
-    | otherwise = picknext (n - 1) item ( (addtothird (third head) (head opts)) : (tail options) )
+    | otherwise = picknext item ( (addtothird (third head) (head opts)) : (tail opts) )
 
 addtothird n (a,b,c) = (a, b, (c + n))
 third (a,b,c) = c
@@ -27,16 +27,23 @@ sumcolumn d ((a,b,c):t)
     | d == a = c + sumcolumn d t
     | otherwise = sumcolumn d t
 
+--proptoprob ((a,b,c):t)
+--    | t == [] = (a,b,c)
+--    |otherwise = ((a,b, (c/ (sumcolumn a ((a,b,c):t)))): proptoprob t)
+
 proptoprob ((a,b,c):t)
-    | t == [] = (a,b,c)
-    |otherwise = ((a,b, (c/ (sumcolumn a ((a,b,c):t)))): proptoprob t)
+    | t == [] = [(a,b,c)]
+    |otherwise = (a,b, (c/ (sumcolumn a ((a,b,c):t)))):(proptoprob t)
 
-options = filter (match1 item) [(key1, key2, prop)]
+options = filter (match1 item)
 
-match1 (key1, key2, prop) = item == key1
+match1 item (key1, key2, prop) = item == key1
 
-pickfirst list = list!!(round ((length list) * random))
+--pickfirst list = list!!(round ((length list) * random))
 
+pickfirst list = list!!(round ((fromIntegral (length list)) * random))
+
+random = 0.1
 
 
 --uses matrix to create a matrix of zeroes and then replaces the zeroes with probabilites

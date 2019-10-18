@@ -12,12 +12,12 @@ matrix list = [(key1, key2, 0) | key1 <- (uniques list), key2 <- (uniques list)]
 makenewlist list n newlist
     |n == 0 = newlist
     |newlist == [] = makenewlist list (n - 1) [(pickfirst list)]
-    |otherwise = makenewlist list (n -1) (picknext (head newlist) (options (last newlist) (proptoprob (populate list (matrix (list)))))) : newlist
+    |otherwise = makenewlist list (n -1) ((picknext (head newlist) (options (head newlist) (proptoprob (populate list (matrix (list)))))) : newlist)
 
 picknext item (head:opts)
     |opts == [] = second head
     |(third head) >= random = second head
-    | otherwise = picknext item ( (proptoprob (opts)) : (tail opts) )
+    | otherwise = picknext item (proptoprob (opts))
 
 addtothird n (a,b,c) = (a, b, (c + n))
 third (a,b,c) = c

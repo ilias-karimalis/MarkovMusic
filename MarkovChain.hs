@@ -1,7 +1,8 @@
 module MarkovChain
 ( getFile,
   importThenBuild,
-  getListOfTick
+  getListOfVelocity,
+  getListOfTicks
 ) where
 
 import Codec.Midi
@@ -19,16 +20,23 @@ importThenBuild filepath = do
   x <- (getFile filepath)
   case x of 
     Left x -> return "fail"
-    Right x -> return (show (getListOfTick x)) 
+    Right x -> return (show (getListOfTicks x)) 
+
+{- getListOfKey returns a listOf the keys which occur in the file
+   -}
+getListOfKey :: Midi -> [Key]
+getListOfKey midi = map (\(y,x) -> key x) (filterNoteOnOff midi)
 
 
 
---getListOfKey midi;
---getListOfVelocity midi;
+{- getListOfVelocity returns a listOf the velocities which occur in the file
+   -}
+getListOfVelocity :: Midi -> [Velocity]
+getListOfVelocity midi = map (\(y,x) -> velocity  x) (filterNoteOnOff midi)
 
 
 
-{- getListOfTick returns a listOf Ticks which occur in the midi filename
+{- getListOfTick returns a listOf the ticks which occur in the midi file
    -}
 getListOfTicks :: Midi -> [Ticks]
 getListOfTicks midi = map (\(y,x) -> y) (filterNoteOnOff midi)
@@ -49,4 +57,3 @@ filterNoteOnOff midi = filter (\(y,x) -> ((isNoteOn x) ||
    -}
 mergeLists :: Foldable t => t [a] -> [a]
 mergeLists lst = foldl (\x res -> x ++ res) [] lst
-

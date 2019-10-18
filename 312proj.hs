@@ -9,8 +9,12 @@
 matrix [] = []
 matrix list = [(key1, key2, 0) | key1 <- (uniques list), key2 <- (uniques list)]
 
+picknext item (head:options)
+    |options == [] = third head
+    |(third head) >= random = second head
+    | otherwise = picknext item ( (addtothird (third head) (head options)) : (tail options) )
 
-
+addtothird n (a,b,c) = (a, b, (c + n))
 third (a,b,c) = c
 second (a,b,c) = b
 
@@ -18,11 +22,11 @@ sumcolumn d ((a,b,c):t)
     | d == a = c + sumcolumn d t
     | otherwise = sumcolumn d t
 
---proptoprob ((a,b,c):t)
-  --  | t == [] = (a,b,c)
-  --  |otherwise = ((a,b, (c/ (sumcolumn a ((a,b,c):t)))): proptoprob t)
+proptoprob ((a,b,c):t)
+    | t == [] = (a,b,c)
+    |otherwise = ((a,b, (c/ (sumcolumn a ((a,b,c):t)))): proptoprob t)
 
---options = filter (match1 item) [(key1, key2, prop)]
+options = filter (match1 item) [(key1, key2, prop)]
 
 match1 (key1, key2, prop) = item == key1
 

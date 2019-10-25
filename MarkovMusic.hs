@@ -14,7 +14,7 @@ markovMusic filepath = do
   x <- (importFile filepath)
   case x of 
     Left x -> return ()
-    Right x -> exportFile "out1.mid" (makeMarkovMIDI x)
+    Right x -> exportFile (filepath++"out.mid") (makeMarkovMIDI x)
 
 
 
@@ -93,9 +93,9 @@ makeMarkovMIDI midi = Midi
 
 {- setup midi calls settup tracks for our specific midi file
    -}
-setup midi = setupTracks [ round x | x <- (makenewlist (parseListOfTicks midi) 25 [])]
-                         [ round x | x <- (makenewlist (parseListOfVelocity midi) 25 [])]
-                         [ round x | x <- (makenewlist (parseListOfKey midi) 25 [])]
+setup midi = setupTracks ([ round x | x <- makenewlist [fromIntegral y | y <- parseListOfTicks midi] 25 []])
+                         ([ round x | x <- makenewlist [fromIntegral y | y <- parseListOfVelocity midi] 25 []])
+                         ([ round x | x <- makenewlist [fromIntegral y | y <- parseListOfKey midi] 25 []])
 
 
 
@@ -125,6 +125,7 @@ setupTracks ticks velocities keys = foldl (\res (t,v,k) -> res++[(0, NoteOn { ch
 matrix [] = []
 matrix list = [(key1, key2, 0) | key1 <- (uniques list), key2 <- (uniques list)]
 
+
 makenewlist list n newlist
     |n == 0 = newlist
     |newlist == [] = makenewlist list (n - 1) [(pickfirst list)]
@@ -139,8 +140,8 @@ addtothird n (a,b,c) = (a, b, (c + n))
 third (a,b,c) = c
 second (a,b,c) = b
 
-sumcolumn d [] = []
 sumcolumn d ((a,b,c):t)
+    | t == [] = c
     | d == a = c + sumcolumn d t
     | otherwise = sumcolumn d t
 

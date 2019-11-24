@@ -1,0 +1,9 @@
+disease(Rabies).
+symptoms(Ln, Rabies) :- member(aggressiveness, Ln). 
+Symptoms(Ln, Rabies) :- write("Y/N have you been bitten by an animal within the last 20 to 60 days?"),
+     readln(Y).
+
+q(Ans) :- 
+    write("Enter symptoms: "), flush_output(current_output),
+    readln(Ln),
+    symptoms(Ln, Ans).
